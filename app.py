@@ -3,6 +3,7 @@
 ####################################
 
 import pandas as pd
+import datetime
 
 import dash
 from dash import dcc
@@ -35,6 +36,8 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.LUX, dbc_css],
                 )
 server=app.server
 
+
+
 ###################################
 # SELECT TEMPLATE for the APP
 ####################################
@@ -54,7 +57,8 @@ sun_1M = dcc.Graph(figure=data_viz.sun(df,'1M'))
 
 title = html.H1(children="S&P 500 Monitor",
                 className=('text-center mb-4'))
-
+as_of = html.H5(children=f'last update: {returns_df.index[-1].year}-{returns_df.index[-1].month}-{returns_df.index[-1].day}',
+                className=('text-center mb-4'))
 
 # Max 12 col available - choose size for screen size
 xs=12
@@ -65,9 +69,13 @@ xl=6
 xxl=6
 
 
+
 app.layout = dbc.Container([
     dbc.Row([
         dbc.Col(title,width=12,class_name=('mt-4'))
+    ]),
+    dbc.Row([
+        dbc.Col(as_of,width=12,class_name=('text-center mt-4'))
     ]),
 
     dbc.Row([
@@ -80,6 +88,7 @@ app.layout = dbc.Container([
 ],
                            fluid=True,
                            className="dbc")
+
 
 ####################################
 # RUN the app

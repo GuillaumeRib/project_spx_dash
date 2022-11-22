@@ -36,10 +36,10 @@ def get_IVV_weight():
 
 def get_prices(df):
     '''
-    Dowload prices from yfinance from a list of tickers. returns df of prices
+    Dowload prices from yfinance from a list of tickers. returns df of prices written to a csv
     '''
     tickers_list = df.index.tolist()
-    start= '2017-12-31'
+    start= '2010-12-31'
     prices_df = yf.download(tickers_list, start=start,interval='1d',)
     return prices_df['Adj Close'].to_csv('spx_dash/spx.csv')
 
@@ -52,6 +52,7 @@ def load_prices_get_returns():
     prices_csv = pd.read_csv(file).set_index('Date')
     prices_csv.index = pd.to_datetime(prices_csv.index)
     returns_df = prices_csv.pct_change()
+    returns_df = returns_df.iloc[:-1]
     return returns_df
 
 def get_returns_period(returns_df,df):
