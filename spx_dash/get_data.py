@@ -52,7 +52,7 @@ def load_prices_get_returns():
     prices_csv = pd.read_csv(file).set_index('Date')
     prices_csv.index = pd.to_datetime(prices_csv.index)
     returns_df = prices_csv.pct_change()
-    returns_df = returns_df.iloc[:-1]
+    #returns_df = returns_df.iloc[:-1] if need to delete last day (current day)
     return returns_df
 
 def get_returns_period(returns_df,df):
