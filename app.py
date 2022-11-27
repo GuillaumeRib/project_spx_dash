@@ -30,11 +30,11 @@ df = get_data.get_returns_period(returns_df,df)
 # INIT APP
 ####################################
 dbc_css = ("https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates@V1.0.2/dbc.min.css")
-spx_app = dash.Dash(__name__, external_stylesheets=[dbc.themes.LUX, dbc_css],
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.LUX, dbc_css],
                 meta_tags=[{'name':'viewport',
                             'content':'width=device-width,initial-scale=1.0'}]
                 )
-server=spx_app.server
+server=app.server
 
 
 
@@ -70,7 +70,7 @@ xxl=6
 
 
 
-spx_app.layout = dbc.Container([
+app.layout = dbc.Container([
     dbc.Row([
         dbc.Col(title,width=12,class_name=('mt-4'))
     ]),
@@ -113,5 +113,5 @@ spx_app.layout = dbc.Container([
 # RUN the app
 ####################################
 if __name__ == '__main__':
-    server=spx_app.server
-    spx_app.run_server(debug=True)
+    server=app.server
+    app.run_server(debug=True)

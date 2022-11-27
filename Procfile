@@ -1,1 +1,1 @@
-web: gunicorn spx_app:server
+web: gunicorn app:server
