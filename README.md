@@ -1,11 +1,11 @@
 # Project Description
 - Name: project_spx_dash
 # Objective
-- Extract S&P 500 constituents weights & prices, compute stats, build charts - deployed on Plotly Dash dashboard through Heroku 
+- Extract S&P 500 constituents weights & prices, compute stats, build charts - through a Plotly Dash app deployed on render 
 - Data
   * S&P 500 constituents tickers, weights, prices, categorical data
 - ML - N/A
-- Front-End - Plotly Dash app - deployed on Heroku
+- Front-End - Plotly Dash app - deployed on render
 # Data Source
 - yfinance for prices
 - wikipedia scrapping for S&P 500 tickers, sectors and Sub-Industry
@@ -13,6 +13,6 @@
 # Type of analysis
 - Data Analysis / ETL / Front-end app
 # Live app
-First app launch may take some time (app may be on sleep)
-- https://spx-monitor.herokuapp.com/
+Switched from heroku to render
+- https://spx-dash.onrender.com/
 
