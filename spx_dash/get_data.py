@@ -59,9 +59,9 @@ def get_returns_period(returns_df,df):
     '''
     Join returns stats with original df. Output df with returns data
     '''
-    df_ret_summ = pd.DataFrame((returns_df[-23:-1]+1).prod()-1,columns=['1M'])
-    df_ret_summ['3M'] = (returns_df[-67:-1]+1).prod()-1
-    df_ret_summ['YTD'] = (returns_df['2022'][:-1]+1).prod()-1
+    df_ret_summ = pd.DataFrame((returns_df[-23:]+1).prod()-1,columns=['1M'])
+    df_ret_summ['3M'] = (returns_df[-67:]+1).prod()-1
+    df_ret_summ['YTD'] = (returns_df['2022']+1).prod()-1
     df = df.join(df_ret_summ)
     return df
 
