@@ -34,14 +34,14 @@ def get_IVV_weight():
 # GETTING S&P prices from yfinance - Loading from csv
 ####################################
 
-def get_prices(df):
+def get_prices(df,csv_path):
     '''
     Dowload prices from yfinance from a list of tickers. returns df of prices written to a csv
     '''
     tickers_list = df.index.tolist()
     start= '2010-12-31'
     prices_df = yf.download(tickers_list, start=start,interval='1d',)
-    return prices_df['Adj Close'].to_csv('spx_dash/spx.csv')
+    return prices_df['Adj Close'].to_csv(csv_path)
 
 def load_prices_get_returns():
     '''
