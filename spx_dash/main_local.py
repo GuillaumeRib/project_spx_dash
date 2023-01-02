@@ -13,4 +13,5 @@ if __name__ == '__main__':
     print('main')
     csv_path = 'spx.csv'
     df = get_data.get_spx_cons()
+    # To Update latest prices
     get_data.get_prices(df,csv_path)
