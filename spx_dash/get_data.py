@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import yfinance as yf
 
 ####################################
@@ -44,6 +45,9 @@ def get_prices(df,csv_path):
     prices_df = yf.download(tickers_list, start=start,interval='1d',)
     return prices_df['Adj Close'].to_csv(csv_path)
 
+####################################
+# Computing returns - Monthly and Daily
+####################################
 def load_prices_get_returns():
     '''
     Load prices from csv and compute monthly returns.
@@ -56,8 +60,15 @@ def load_prices_get_returns():
     # fwd fill last prices to missing daily prices (non-trading). resample as Monthly.
     mth_prices_csv = prices_csv.asfreq('D').ffill().asfreq('M').ffill()
     returns_df = mth_prices_csv.pct_change()
-    return returns_df
 
+    daily_prices_csv = prices_csv.asfreq('D').ffill()
+    returns_daily_df = daily_prices_csv.pct_change()
+
+    return returns_df, returns_daily_df
+
+####################################
+# Computing returns - 1M, 3M, and YTD
+####################################
 def get_returns_period(returns_df,df):
     '''
     Add monthly returns stats to original df. Output df with returns data
@@ -67,11 +78,28 @@ def get_returns_period(returns_df,df):
     df_ret_summ['3M'] = (returns_df[-3:]+1).prod()-1
     df_ret_summ['YTD'] = (returns_df['2022']+1).prod()-1
     df_ret_summ.index.rename('Symbol',inplace=True)
-
     df = df.join(df_ret_summ)
+
     return df
 
+####################################
+# Computing sector cumulative
+# performance for line chart
+####################################
+def get_sector_cum_returns(returns_daily_df,df,period='2022'):
+    '''
+    from df of monthly returns for each stocks compute sector cum performance vs EW
+    '''
+    sector_cum_perf_df = returns_daily_df['2022'].T
+    sector_cum_perf_df.index.rename('Symbol',inplace=True)
+    sector_cum_perf_df = df.join(sector_cum_perf_df)
+    sector_cum_perf_df = sector_cum_perf_df.drop(columns='Weight')
+    sector_cum_perf_df = sector_cum_perf_df.groupby('Sector').mean().T
+    sector_cum_perf_df = (sector_cum_perf_df+1).cumprod()*100
+    sector_cum_perf_df.loc[pd.to_datetime('2021-12-31')]= 100
+    sector_cum_perf_df = sector_cum_perf_df.sort_index()
 
+    return sector_cum_perf_df
 
 ####################################
 # FEATURE ENGINEERING
