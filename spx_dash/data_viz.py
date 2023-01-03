@@ -18,9 +18,7 @@ def sun(df,period='1M'):
                       #range_color=[-0.5,0.5],
                       #hover_name=period,
                       hover_data={period:':.2%','Weight':':.2%'}
-                 )
-    fig.update_traces(marker=dict(size=5), selector=dict(mode='markers')
-                     )
+                      )
     fig.update_layout(margin=dict(l=20, r=20),
                       title=f'S&P 500 | Composition and Performance Highlight - {period}',
                      height=600)
@@ -93,9 +91,12 @@ def tree(df,period='1M'):
                      hover_data={period:':.2%','Weight':':.2%'},
                      title=''
                  )
-    fig.update_traces(marker=dict(size=5), selector=dict(mode='markers'))
+    fig.update_traces(pathbar_edgeshape='>',
+                      selector=dict(type='treemap')
+                      )
     fig.update_layout(margin=dict(l=20, r=20),
-                     height=600)
+                     height=600
+                     )
     return fig
 
 def bar_sec(df,period='1M'):
