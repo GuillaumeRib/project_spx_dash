@@ -17,7 +17,7 @@ def sun(df,period='1M'):
                       color_continuous_midpoint=0,
                       #range_color=[-0.5,0.5],
                       #hover_name=period,
-                      hover_data={period:':.4f'}
+                      hover_data={period:':.2%','Weight':':.2%'}
                  )
     fig.update_traces(marker=dict(size=5), selector=dict(mode='markers')
                      )
@@ -64,14 +64,17 @@ def scat_ind(df,period='1M'):
                     color='Sector',
                     hover_name='Sub-Industry',
                     color_discrete_sequence=px.colors.qualitative.Plotly,
-                    hover_data={period:':.4f'}
+                    hover_data={period:':.2%'}
                     #size='Weight',
                 )
     fig.update_traces(marker=dict(size=8), selector=dict(mode='markers'))
     fig.update_layout(margin=dict(l=20, r=20),
-                      title=f'Sub-Industry Top/Worst Performers by Sector - {period}',
+                      title=f'EW Sub-Industry Performance by Sector - {period}',
                      height=800,
                      )
+
+    fig.update_yaxes(tickformat='.0%')
+
     return fig
 
 
@@ -87,7 +90,7 @@ def tree(df,period='1M'):
                      color_continuous_scale=color_cont,
                      color_continuous_midpoint=0,
                      #range_color=[-0.5,0.5],
-                     hover_data={period:':.4f'},
+                     hover_data={period:':.2%','Weight':':.2%'},
                      title=''
                  )
     fig.update_traces(marker=dict(size=5), selector=dict(mode='markers'))
@@ -107,12 +110,15 @@ def bar_sec(df,period='1M'):
                  y=[period,'YTD'],
                  color_discrete_sequence=['indianred','grey'],
                  barmode='group',
-
                 )
 
     fig.update_layout(margin=dict(l=20, r=20),
-                      title='EW Sector Returns - 1M vs YTD',
-                     height=600,)
+                      title=f'EW Sector Returns - {period} vs YTD',
+                     height=600,
+                     )
+
+    fig.update_yaxes(tickformat='.2%')
+
     return fig
 
 
@@ -122,14 +128,16 @@ def scat_stock(df):
     '''
     fig = px.scatter(df,
                      x='YTD',
-                     y='1M',
+                     y='3M',
                      color='Sector',
                      size='Weight',
                      hover_name='Security',
                      size_max=40,
                      color_discrete_sequence=px.colors.qualitative.Plotly,
-                     hover_data={'1M':':.4f','YTD':':.4f'},
-                     title='Stock Return 1M vs YTD'
+                     hover_data={'3M':':.2%',
+                                 'YTD':':.2%',
+                                 'Weight':':2%'},
+                     title=f'Stock Return 3M vs YTD'
 
                 )
     fig.update_traces(marker=dict(
@@ -140,4 +148,8 @@ def scat_stock(df):
     fig.update_layout(margin=dict(l=20, r=20),
                      height=600,
                     )
+
+    fig.update_yaxes(tickformat='.0%')
+    fig.update_xaxes(tickformat='.0%')
+
     return fig
