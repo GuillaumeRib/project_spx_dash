@@ -45,23 +45,27 @@ def get_prices(df,csv_path):
 
 def load_prices_get_returns():
     '''
-    Load prices from csv and compute daily returns.
+    Load prices from csv and compute monthly returns.
     output returns_df
     '''
     file = 'spx_dash/spx.csv'
     prices_csv = pd.read_csv(file).set_index('Date')
     prices_csv.index = pd.to_datetime(prices_csv.index)
-    returns_df = prices_csv.pct_change()
-    #returns_df = returns_df.iloc[:-1] if need to delete last day (current day)
+
+    # fwd fill last prices to missing daily prices (non-trading). resample as Monthly.
+    mth_prices_csv = prices_csv.asfreq('D').ffill().asfreq('M').ffill()
+    returns_df = mth_prices_csv.pct_change()
     return returns_df
 
 def get_returns_period(returns_df,df):
     '''
-    Join returns stats with original df. Output df with returns data
+    Add monthly returns stats to original df. Output df with returns data
     '''
-    df_ret_summ = pd.DataFrame((returns_df[-23:-1]+1).prod()-1,columns=['1M'])
-    df_ret_summ['3M'] = (returns_df[-67:-1]+1).prod()-1
-    df_ret_summ['YTD'] = (returns_df['2022'][:-1]+1).prod()-1
+
+    df_ret_summ = pd.DataFrame((returns_df[-1:]+1).prod()-1,columns=['1M'])
+    df_ret_summ['3M'] = (returns_df[-3:]+1).prod()-1
+    df_ret_summ['YTD'] = (returns_df['2022']+1).prod()-1
+    df_ret_summ.index.rename('Symbol',inplace=True)
     df = df.join(df_ret_summ)
     return df
 

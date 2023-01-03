@@ -16,7 +16,7 @@ from spx_dash import get_data
 from spx_dash import data_viz
 
 
-###################################
+####################################
 # Load data & dfs
 ####################################
 df = get_data.get_spx_cons()
@@ -38,17 +38,11 @@ server=app.server
 
 
 
-###################################
+####################################
 # SELECT TEMPLATE for the APP
 ####################################
 # loads the template and sets it as the default
 load_figure_template("lux")
-
-
-###################################
-# IMPORT Charts
-####################################
-
 
 
 ####################################
