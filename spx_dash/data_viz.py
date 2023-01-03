@@ -8,7 +8,7 @@ def sun(df,period='1M'):
     '''
     Plot a sunburst of S&P Sector industry and stocks by Size=weight, Color=Perf
     '''
-    color_cont=['red','white','green']
+    color_cont=['red','white','blue']
     fig = px.sunburst(df,
                       path= ['Sector', 'Sub-Industry','Security'], #key arg for plotly to create hierarchy based on tidy data
                       values='Weight',
@@ -20,33 +20,10 @@ def sun(df,period='1M'):
                       hover_data={period:':.2%','Weight':':.2%'}
                       )
     fig.update_layout(margin=dict(l=20, r=20),
-                      title=f'S&P 500 | Composition and Performance Highlight - {period}',
+                      title=f'S&P 500 | Composition and Returns - {period}',
                      height=600)
     return fig
 
-def violin_sec(df,period='1M'):
-    '''
-    Plot Violin Dispersion plot of S&P sector for period performance
-    '''
-    df = df
-    fig = px.violin(df,
-                    x='Sector',
-                    y=period,
-                    color='Sector',
-                    hover_name='Security',
-                    box=True,
-                    color_discrete_sequence=px.colors.qualitative.Plotly,
-                    #range_y=(-1,1.5)
-                    )
-
-
-    fig.update_layout(margin=dict(l=20, r=20),
-                      title=f'Dispersion By Sector - {period}',
-                      showlegend=False,
-                      height=600
-
-                      )
-    return fig
 
 
 def scat_ind(df,period='1M'):
@@ -67,7 +44,7 @@ def scat_ind(df,period='1M'):
                 )
     fig.update_traces(marker=dict(size=8), selector=dict(mode='markers'))
     fig.update_layout(margin=dict(l=20, r=20),
-                      title=f'EW Sub-Industry Performance by Sector - {period}',
+                      title=f'EW industry returns dispersion by sector - {period}',
                      height=800,
                      )
 
@@ -80,7 +57,7 @@ def tree(df,period='1M'):
     '''
 
     '''
-    color_cont=['red','white','green']
+    color_cont=['red','white','blue']
     fig = px.treemap(df,
                      path= ['Sector','Sub-Industry','Security'], #key arg for plotly to create hierarchy based on tidy data
                      values='Weight',
@@ -91,9 +68,7 @@ def tree(df,period='1M'):
                      hover_data={period:':.2%','Weight':':.2%'},
                      title=''
                  )
-    fig.update_traces(pathbar_edgeshape='>',
-                      selector=dict(type='treemap')
-                      )
+
     fig.update_layout(margin=dict(l=20, r=20),
                      height=600
                      )
@@ -114,7 +89,7 @@ def bar_sec(df,period='1M'):
                 )
 
     fig.update_layout(margin=dict(l=20, r=20),
-                      title=f'EW Sector Returns - {period} vs YTD',
+                      title=f'EW sector returns - {period} vs YTD',
                      height=600,
                      )
 
@@ -138,7 +113,7 @@ def scat_stock(df):
                      hover_data={'3M':':.2%',
                                  'YTD':':.2%',
                                  'Weight':':2%'},
-                     title=f'Stock Return 3M vs YTD'
+                     title=f'Stock returns - 3M vs YTD'
 
                 )
     fig.update_traces(marker=dict(
