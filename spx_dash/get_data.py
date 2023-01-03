@@ -28,6 +28,7 @@ def get_IVV_weight():
     df_IVV = df_IVV.set_index('Ticker')
     df_IVV.index = df_IVV.index.str.replace('BRKB','BRK-B')
     df_IVV.index = df_IVV.index.str.replace('BFB','BF-B')
+    df_IVV['Weight (%)'] = df_IVV['Weight (%)']/100
     return df_IVV
 
 ####################################
@@ -66,7 +67,7 @@ def get_returns_period(returns_df,df):
     df_ret_summ['3M'] = (returns_df[-3:]+1).prod()-1
     df_ret_summ['YTD'] = (returns_df['2022']+1).prod()-1
     df_ret_summ.index.rename('Symbol',inplace=True)
-    
+
     df = df.join(df_ret_summ)
     return df
 

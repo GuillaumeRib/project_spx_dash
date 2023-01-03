@@ -74,16 +74,16 @@ app.layout = dbc.Container([
 
     dbc.Row([
         dbc.Col(
-            dcc.Graph(figure=data_viz.sun(df,'1M')),
+            dcc.Graph(figure=data_viz.sun(df,'YTD')),
             xs=12,sm=12,md=12,lg=12,xl=6,xxl=6,class_name=('mt-4')),
         dbc.Col(
-            dcc.Graph(figure=data_viz.tree(df,'1M')),
+            dcc.Graph(figure=data_viz.tree(df,'YTD')),
             xs=12,sm=12,md=12,lg=12,xl=6,xxl=6,class_name=('mt-4')),
     ]),
 
     dbc.Row([
         dbc.Col(
-            dcc.Graph(figure=data_viz.bar_sec(df,'1M')),
+            dcc.Graph(figure=data_viz.bar_sec(df,'3M')),
             xs=12,sm=12,md=12,lg=12,xl=12,xxl=12,class_name=('mt-4')),
         dbc.Col(
             dcc.Graph(figure=data_viz.scat_stock(df)),
@@ -92,7 +92,7 @@ app.layout = dbc.Container([
 
     dbc.Row([
         dbc.Col(
-            dcc.Graph(figure=data_viz.scat_ind(df,'1M')),
+            dcc.Graph(figure=data_viz.scat_ind(df,'3M')),
             xs=12,sm=12,md=12,lg=12,xl=12,xxl=12,class_name=('mt-4')),
     ]),
 
