@@ -15,7 +15,7 @@ def sun(df,period='1M'):
                       color=period,
                       color_continuous_scale=color_cont,
                       color_continuous_midpoint=0,
-                      range_color=[-0.5,0.5],
+                      #range_color=[-0.5,0.5],
                       #hover_name=period,
                       hover_data={period:':.4f'}
                  )
