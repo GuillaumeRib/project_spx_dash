@@ -8,7 +8,7 @@ def sun(df,period='1M'):
     '''
     Plot a sunburst of S&P Sector industry and stocks by Size=weight, Color=Perf
     '''
-    color_cont=['red','white','blue']
+    color_cont=['red','white','green']
     fig = px.sunburst(df,
                       path= ['Sector', 'Sub-Industry','Security'], #key arg for plotly to create hierarchy based on tidy data
                       values='Weight',
@@ -20,7 +20,7 @@ def sun(df,period='1M'):
                       hover_data={period:':.2%','Weight':':.2%'}
                       )
     fig.update_layout(margin=dict(l=20, r=20),
-                      title=f'S&P 500 | Composition and Returns - {period}',
+                      title=f'S&P 500 | Holdings breakdowns & returns - {period}',
                      height=600)
     return fig
 
@@ -44,7 +44,7 @@ def scat_ind(df,period='1M'):
                 )
     fig.update_traces(marker=dict(size=8), selector=dict(mode='markers'))
     fig.update_layout(margin=dict(l=20, r=20),
-                      title=f'EW industry returns dispersion by sector - {period}',
+                      title=f'Industry returns (EW) - {period}',
                      height=800,
                      )
 
@@ -57,7 +57,7 @@ def tree(df,period='1M'):
     '''
 
     '''
-    color_cont=['red','white','blue']
+    color_cont=['red','white','green']
     fig = px.treemap(df,
                      path= ['Sector','Sub-Industry','Security'], #key arg for plotly to create hierarchy based on tidy data
                      values='Weight',
@@ -89,7 +89,7 @@ def bar_sec(df,period='1M'):
                 )
 
     fig.update_layout(margin=dict(l=20, r=20),
-                      title=f'EW sector returns - {period} vs YTD',
+                      title=f'Sector returns (EW) - {period} vs YTD',
                      height=600,
                      )
 
