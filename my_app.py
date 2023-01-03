@@ -22,7 +22,8 @@ from spx_dash import data_viz
 df = get_data.get_spx_cons()
 df_IVV = get_data.get_IVV_weight()
 df = get_data.join_dfs(df,df_IVV)
-returns_df = get_data.load_prices_get_returns( )
+returns_df,returns_daily_df = get_data.load_prices_get_returns( )
+sector_cum_perf_df = get_data.get_sector_cum_returns(returns_daily_df,df)
 df = get_data.get_returns_period(returns_df,df)
 
 
@@ -49,7 +50,7 @@ load_figure_template("lux")
 # FILL Template layout
 ####################################
 
-title = html.H1(children="S&P 500 Monitor",
+title = html.H1(children="S&P 500 Holdings Monitor",
                 className=('text-center mb-4'))
 as_of = html.H5(children=f'last update: {returns_df.index[-1].year}-{returns_df.index[-1].month}-{returns_df.index[-1].day}',
                 className=('text-center mb-4'))
@@ -80,6 +81,13 @@ app.layout = dbc.Container([
             dcc.Graph(figure=data_viz.tree(df,'YTD')),
             xs=12,sm=12,md=12,lg=12,xl=6,xxl=6,class_name=('mt-4')),
     ]),
+
+    dbc.Row([
+            dbc.Col(
+                dcc.Graph(figure=data_viz.line_sector(sector_cum_perf_df)),
+                xs=12,sm=12,md=12,lg=12,xl=12,xxl=12,class_name=('mt-4')),
+        ]),
+
 
     dbc.Row([
         dbc.Col(

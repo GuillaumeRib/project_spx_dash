@@ -129,3 +129,26 @@ def scat_stock(df):
     fig.update_xaxes(tickformat='.0%')
 
     return fig
+
+def line_sector(sector_cum_perf_df):
+    '''
+    Plot cumulative performances of Sectors(EW) vs EW of Sectors
+    '''
+    sectors = sector_cum_perf_df.columns
+    fig = px.line(sector_cum_perf_df,
+                     y=sectors,
+                     color_discrete_sequence=px.colors.qualitative.Plotly,
+                     title=f'Cumulative sector returns (EW) - YTD'
+
+                )
+
+    fig.update_layout(margin=dict(l=20, r=20),
+                     height=600,
+                     xaxis_title=None,
+                     yaxis_title=None
+                    )
+
+    fig.update_yaxes(tickformat='.2f')
+
+
+    return fig
