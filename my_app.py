@@ -20,11 +20,14 @@ from spx_dash import data_viz
 # Load data & dfs
 ####################################
 df = get_data.load_wiki_cons('spx_dash/wiki_cons.csv')
-df_IVV = get_data.load_IVV_weight()
-df = get_data.join_dfs(df,df_IVV)
-returns_df,returns_daily_df = get_data.get_returns( )
-sector_cum_perf_df = get_data.get_sector_cum_returns(returns_daily_df,df)
-df = get_data.get_returns_period(returns_df,df)
+weights = get_data.load_IVV_weight()
+df = get_data.join_dfs(df,weights)
+returns_df = get_data.get_returns()
+
+stock_df = get_data.get_stock_perf(returns_df,df)
+sector_df, ind_df, sector_cum_perf = get_data.get_sector_perf(returns_df,df)
+
+
 
 
 ####################################
@@ -75,32 +78,32 @@ app.layout = dbc.Container([
 
     dbc.Row([
         dbc.Col(
-            dcc.Graph(figure=data_viz.sun(df,'YTD')),
+            dcc.Graph(figure=data_viz.sun(stock_df,'YTD')),
             xs=12,sm=12,md=12,lg=12,xl=6,xxl=6,class_name=('mt-4')),
         dbc.Col(
-            dcc.Graph(figure=data_viz.tree(df,'YTD')),
+            dcc.Graph(figure=data_viz.tree(stock_df,'YTD')),
             xs=12,sm=12,md=12,lg=12,xl=6,xxl=6,class_name=('mt-4')),
     ]),
 
     dbc.Row([
             dbc.Col(
-                dcc.Graph(figure=data_viz.line_sector(sector_cum_perf_df)),
+                dcc.Graph(figure=data_viz.line_sector(sector_cum_perf)),
                 xs=12,sm=12,md=12,lg=12,xl=12,xxl=12,class_name=('mt-4')),
         ]),
 
 
     dbc.Row([
         dbc.Col(
-            dcc.Graph(figure=data_viz.bar_sec(df,'3M')),
+            dcc.Graph(figure=data_viz.bar_sec(sector_df,'3M')),
             xs=12,sm=12,md=12,lg=12,xl=12,xxl=12,class_name=('mt-4')),
         dbc.Col(
-            dcc.Graph(figure=data_viz.scat_stock(df)),
+            dcc.Graph(figure=data_viz.scat_ind(stock_df,'YTD')),
             xs=12,sm=12,md=12,lg=12,xl=12,xxl=12,class_name=('mt-4')),
     ]),
 
     dbc.Row([
         dbc.Col(
-            dcc.Graph(figure=data_viz.scat_ind(df,'3M')),
+            dcc.Graph(figure=data_viz.scat_stock(stock_df)),
             xs=12,sm=12,md=12,lg=12,xl=12,xxl=12,class_name=('mt-4')),
     ]),
 

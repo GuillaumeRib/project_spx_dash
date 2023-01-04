@@ -31,21 +31,31 @@ def scat_ind(df,period='1M'):
     '''
 
     '''
-    df = df.groupby(by=['Sub-Industry','Sector',],as_index=False).mean()
-    df= df.sort_values(by=period,ascending=False)
+    data = df.groupby(by=['Sub-Industry','Sector',],as_index=False).mean()
+    count = df.groupby(by=['Sub-Industry','Sector'],as_index=False).count()
 
-    fig = px.scatter(df,
+    data['Count'] = count.YTD
+
+    data = data.sort_values(by=period,ascending=False)
+    print(data)
+
+
+    fig = px.scatter(data,
                     x='Sub-Industry',
                     y=period,
                     color='Sector',
+                    size = 'Count',
                     hover_name='Sub-Industry',
                     color_discrete_sequence=px.colors.qualitative.Plotly,
-                    hover_data={period:':.2%'}
-                    #size='Weight',
+                    hover_data={period:':.2%', 'Count':':.0f' }
                 )
-    fig.update_traces(marker=dict(size=8), selector=dict(mode='markers'))
+    fig.update_traces(marker=dict(
+        line=dict(
+        width=0.5,
+        color='DarkSlateGrey')
+    ))
     fig.update_layout(margin=dict(l=20, r=20),
-                      title=f'Industry returns (EW) - {period}',
+                      title=f'Industry returns (EW) - {period} - (size: #stocks)',
                      height=800,
                      )
 
@@ -80,7 +90,7 @@ def bar_sec(df,period='1M'):
 
     '''
     df = df.groupby(by='Sector').mean()
-    df= df.sort_values(by=period,ascending=False)
+    df= df.sort_values(by='YTD',ascending=False)
 
     fig = px.bar(df,
                  x=df.index,
