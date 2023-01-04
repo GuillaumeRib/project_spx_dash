@@ -21,7 +21,7 @@ def sun(df,period='1M'):
                       )
     fig.update_traces(marker=dict(size=8), selector=dict(mode='markers'))
     fig.update_layout(margin=dict(l=20, r=20),
-                      title=f'S&P 500 constituents | sector & industry breakdowns - {period}',
+                      title=f'S&P 500 Breakdown | sector & industry - {period}',
                      height=600)
     return fig
 
@@ -52,8 +52,10 @@ def scat_ind(df,period='1M'):
         color='DarkSlateGrey')
     ))
     fig.update_layout(margin=dict(l=20, r=20),
-                      title=f'Industry returns (EW) - {period} - (size: #stocks)',
+                      title=f'Industry EW returns - {period}',
                      height=800,
+                     xaxis_title=None,
+                     yaxis_title=None
                      )
 
     fig.update_yaxes(tickformat='.0%')
@@ -79,7 +81,7 @@ def tree(df,period='1M'):
 
     fig.update_layout(margin=dict(l=20, r=20),
                      height=600,
-                     title=f'S&P 500 constituents | sector & industry breakdowns - {period}'
+                     title=f'S&P 500 breakdown | Sector & industry - {period}'
                      )
     return fig
 
@@ -98,8 +100,10 @@ def bar_sec(df):
                 )
 
     fig.update_layout(margin=dict(l=20, r=20),
-                      title=f'Sector returns (EW) - 1M vs 3M vs YTD',
+                      title=f'Sector EW returns',
                      height=600,
+                     xaxis_title=None,
+                     yaxis_title=None
                      )
 
     fig.update_yaxes(tickformat='.2%')
@@ -122,7 +126,7 @@ def scat_stock(df):
                      hover_data={'3M':':.2%',
                                  'YTD':':.2%',
                                  'Weight':':2%'},
-                     title=f'Stock returns - 3M vs YTD - (size: Weight)'
+                     title=f'Stock returns - 3M vs YTD'
 
                 )
     fig.update_traces(marker=dict(
@@ -147,7 +151,7 @@ def line_sector(sector_cum_perf_df):
     fig = px.line(sector_cum_perf_df,
                      y=sectors,
                      color_discrete_sequence=px.colors.qualitative.Plotly,
-                     title=f'Cumulative sector returns (EW) - YTD'
+                     title=f'Cumulative growth | Sector EW - YTD'
 
                 )
 
