@@ -21,7 +21,7 @@ def sun(df,period='1M'):
                       )
     fig.update_traces(marker=dict(size=8), selector=dict(mode='markers'))
     fig.update_layout(margin=dict(l=20, r=20),
-                      title=f'S&P 500 | Holdings breakdowns & returns - {period}',
+                      title=f'S&P 500 constituents | sector & industry breakdowns - {period}',
                      height=600)
     return fig
 

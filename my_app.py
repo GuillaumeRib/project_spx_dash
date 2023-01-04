@@ -19,10 +19,10 @@ from spx_dash import data_viz
 ####################################
 # Load data & dfs
 ####################################
-df = get_data.get_spx_cons()
-df_IVV = get_data.get_IVV_weight()
+df = get_data.load_wiki_cons('spx_dash/wiki_cons.csv')
+df_IVV = get_data.load_IVV_weight()
 df = get_data.join_dfs(df,df_IVV)
-returns_df,returns_daily_df = get_data.load_prices_get_returns( )
+returns_df,returns_daily_df = get_data.get_returns( )
 sector_cum_perf_df = get_data.get_sector_cum_returns(returns_daily_df,df)
 df = get_data.get_returns_period(returns_df,df)
 
