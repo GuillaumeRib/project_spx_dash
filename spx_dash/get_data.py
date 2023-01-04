@@ -64,50 +64,63 @@ def load_wiki_cons(csv_path):
 # COMPUTE FUNCTIONS
 ####################################
 
-# Computing Monthly and Daily returns
+# Computing Daily returns
 def get_returns():
     '''
-    Load prices from csv and compute monthly returns.
+    Load prices from csv and compute daily stock returns.
     output returns_df
     '''
     file = 'spx_dash/spx.csv'
     prices_csv = pd.read_csv(file).set_index('Date')
     prices_csv.index = pd.to_datetime(prices_csv.index)
-    # fwd fill last prices to missing daily prices (non-trading). resample as Monthly.
-    mth_prices_csv = prices_csv.asfreq('D').ffill().asfreq('M').ffill()
-    returns_df = mth_prices_csv.pct_change()
+    # fwd fill last prices to missing daily prices (non-trading)
     daily_prices_csv = prices_csv.asfreq('D').ffill()
-    returns_daily_df = daily_prices_csv.pct_change()
-    return returns_df, returns_daily_df
+    returns_df = np.log(daily_prices_csv / daily_prices_csv.shift(1))
+    return returns_df
 
 
-# Computing returns - 1M, 3M, and YTD
-def get_returns_period(returns_df,df):
+# Computing stock 1M, 3M, and YTD performance
+def get_stock_perf(returns_df,df):
     '''
-    Add monthly returns stats to original df. Output df with returns data
+    Compute per periods from daily returns
     '''
-    df_ret_summ = pd.DataFrame((returns_df[-1:]+1).prod()-1,columns=['1M'])
-    df_ret_summ['3M'] = (returns_df[-3:]+1).prod()-1
-    df_ret_summ['YTD'] = (returns_df['2022']+1).prod()-1
+    df_ret_summ = pd.DataFrame(np.exp((returns_df[-30:]).sum())-1,columns=['1M'])
+    df_ret_summ['3M'] = np.exp(returns_df[-90:].sum())-1
+    df_ret_summ['YTD'] = np.exp(returns_df['2022'].sum())-1
     df_ret_summ.index.rename('Symbol',inplace=True)
-    df = df.join(df_ret_summ)
-    return df
+    stock_df = df.join(df_ret_summ)
+    return stock_df
 
 
-# Computing sector cumulative performance for line chart
-def get_sector_cum_returns(returns_daily_df,df,period='2022'):
+# Computing sector ind returns
+def get_sector_perf(returns_df,df,period='2022'):
     '''
     from df of monthly returns for each stocks compute sector cum performance vs EW
     '''
-    sector_cum_perf_df = returns_daily_df['2022'].T
-    sector_cum_perf_df.index.rename('Symbol',inplace=True)
-    sector_cum_perf_df = df.join(sector_cum_perf_df)
-    sector_cum_perf_df = sector_cum_perf_df.drop(columns='Weight')
-    sector_cum_perf_df = sector_cum_perf_df.groupby('Sector').mean().T
-    sector_cum_perf_df = (sector_cum_perf_df+1).cumprod()*100
-    sector_cum_perf_df.loc[pd.to_datetime('2021-12-31')]= 100
-    sector_cum_perf_df = sector_cum_perf_df.sort_index()
-    return sector_cum_perf_df
+    # Compute Sector / Industry daily returns - mean of stocks by sectors
+    returns = returns_df['2022'].T
+    returns.index.rename('Symbol',inplace=True)
+    returns = df.join(returns)
+    returns = returns.drop(columns='Weight')
+    sector_returns = returns.groupby('Sector').mean().T
+    ind_returns = returns.groupby('Sub-Industry').mean().T
+
+    # Compute cumul sector return for line chart
+    sector_cum_perf = (np.exp((sector_returns).cumsum()))*100
+    sector_cum_perf.loc[pd.to_datetime('2021-12-31')]= 100
+    sector_cum_perf = sector_cum_perf.sort_index()
+
+
+    sector_df = pd.DataFrame(np.exp((sector_returns[-30:]).sum())-1,columns=['1M'])
+    sector_df['3M'] = np.exp(sector_returns[-90:].sum())-1
+    sector_df['YTD'] = np.exp(sector_returns.sum())-1
+
+    ind_df = pd.DataFrame(np.exp((ind_returns[-30:]).sum())-1,columns=['1M'])
+    ind_df['3M'] = np.exp(ind_returns[-90:].sum())-1
+    ind_df['YTD'] = np.exp(ind_returns.sum())-1
+
+
+    return sector_df, ind_df, sector_cum_perf
 
 ####################################
 # FEATURE ENGINEERING
