@@ -53,7 +53,7 @@ load_figure_template("lux")
 # FILL Template layout
 ####################################
 
-title = html.H1(children="S&P 500 Holdings Monitor",
+title = html.H1(children="S&P 500 Monitor",
                 className=('text-center mb-4'))
 as_of = html.H5(children=f'last update: {returns_df.index[-1].year}-{returns_df.index[-1].month}-{returns_df.index[-1].day}',
                 className=('text-center mb-4'))
