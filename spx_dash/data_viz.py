@@ -33,11 +33,8 @@ def scat_ind(df,period='1M'):
     '''
     data = df.groupby(by=['Sub-Industry','Sector',],as_index=False).mean()
     count = df.groupby(by=['Sub-Industry','Sector'],as_index=False).count()
-
     data['Count'] = count.YTD
-
     data = data.sort_values(by=period,ascending=False)
-    print(data)
 
 
     fig = px.scatter(data,
@@ -81,11 +78,12 @@ def tree(df,period='1M'):
                  )
 
     fig.update_layout(margin=dict(l=20, r=20),
-                     height=600
+                     height=600,
+                     title=f'S&P 500 constituents | sector & industry breakdowns - {period}'
                      )
     return fig
 
-def bar_sec(df,period='1M'):
+def bar_sec(df):
     '''
 
     '''
@@ -94,13 +92,13 @@ def bar_sec(df,period='1M'):
 
     fig = px.bar(df,
                  x=df.index,
-                 y=[period,'YTD'],
-                 color_discrete_sequence=['indianred','grey'],
+                 y=['1M','3M','YTD'],
+                 color_discrete_sequence=['darkgrey','grey','indianred'],
                  barmode='group',
                 )
 
     fig.update_layout(margin=dict(l=20, r=20),
-                      title=f'Sector returns (EW) - {period} vs YTD',
+                      title=f'Sector returns (EW) - 1M vs 3M vs YTD',
                      height=600,
                      )
 
@@ -124,7 +122,7 @@ def scat_stock(df):
                      hover_data={'3M':':.2%',
                                  'YTD':':.2%',
                                  'Weight':':2%'},
-                     title=f'Stock returns - 3M vs YTD'
+                     title=f'Stock returns - 3M vs YTD - (size: Weight)'
 
                 )
     fig.update_traces(marker=dict(
