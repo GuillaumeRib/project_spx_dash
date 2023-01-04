@@ -19,6 +19,7 @@ def sun(df,period='1M'):
                       #hover_name=period,
                       hover_data={period:':.2%','Weight':':.2%'}
                       )
+    fig.update_traces(marker=dict(size=8), selector=dict(mode='markers'))
     fig.update_layout(margin=dict(l=20, r=20),
                       title=f'S&P 500 | Holdings breakdowns & returns - {period}',
                      height=600)

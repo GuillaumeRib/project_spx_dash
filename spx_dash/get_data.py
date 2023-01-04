@@ -17,6 +17,8 @@ def get_spx_cons():
     df = df.drop(['SEC filings','Headquarters Location','Date first added','CIK','Founded'],axis=1)
     df = df.sort_values(by=['GICS Sector','GICS Sub-Industry'])
     df = df.set_index('Symbol')
+    df.dropna(inplace=True)
+    print(df.shape)
     return df
 
 ####################################
@@ -30,6 +32,7 @@ def get_IVV_weight():
     df_IVV.index = df_IVV.index.str.replace('BRKB','BRK-B')
     df_IVV.index = df_IVV.index.str.replace('BFB','BF-B')
     df_IVV['Weight (%)'] = df_IVV['Weight (%)']/100
+    print(df_IVV.loc['GE'])
     return df_IVV
 
 ####################################
